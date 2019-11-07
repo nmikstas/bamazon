@@ -14,6 +14,7 @@ let getInput = function(results)
             message: "Which product ID would you like to buy(0 to quit)?",
             validate: value =>
             {
+                
                 let val = parseInt(value);
                 if(value === "0") //Exit if user types 0.
                 {
@@ -33,7 +34,7 @@ let getInput = function(results)
     ]).then(selection =>
     {
         //Convert the user's selection into an index.
-        let index = selection.productSelection - 1;
+        let index = parseInt(selection.productSelection) - 1;
 
         //Get the number of items the customer would like to buy.
         inquirer.prompt
@@ -62,7 +63,7 @@ let getInput = function(results)
         ]).then(selection =>
         {
             //Get the value to extract from the existing stock.
-            let val = selection.productQuantity;
+            let val = parseInt(selection.productQuantity);
 
             //Update the database.
             bamazonSQL.purchaseProducts(index, val);

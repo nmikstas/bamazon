@@ -69,7 +69,92 @@ let printProducts = function(itemArray)
     console.log("");
 }
 
+let printDepartments = function(deptArray)
+{
+    const DEPT_ID_WIDTH     = 14;
+    const DEPT_NAME_WIDTH   = 29;
+    const DEPT_COSTS_WIDTH  = 14;
+    const DEPT_SALES_WIDTH  = 13;
+    const DEPT_PROFIT_WIDTH = 13;
+
+    console.log("\n| department_id | department_name              | over_head_cost | product_sales | total_profit |");
+    console.log("|---------------|------------------------------|----------------|---------------|--------------|");
+
+    for(let i = 0; i < deptArray.length; i++)
+    {
+        //Calculate the number of spaces required to pad the item_id column.
+        let idString = "" + deptArray[i].department_id;
+        let idPad = DEPT_ID_WIDTH - idString.length;
+        for(let i = 0; i < idPad; i++)
+        {
+            idString += " "; 
+        }
+
+        //Calculate the number of spaces required to pad the department_name column.
+        let deptString = "" + deptArray[i].department_name;
+        let deptPad = DEPT_NAME_WIDTH - deptString.length;
+        for(let i = 0; i < deptPad; i++)
+        {
+            deptString += " "; 
+        }
+
+        //Calculate the number of spaces required to pad the over_head_costs column.
+        let costString = "" + deptArray[i].over_head_costs;
+        let costNum = parseFloat(costString);
+        let costsPad = DEPT_COSTS_WIDTH - costString.length;
+        for(let i = 0; i < costsPad; i++)
+        {
+            costString += " "; 
+        }
+
+        //Calculate the number of spaces required to pad the product_sales column.
+        let salesString = "";
+        let salesNum;
+        if(deptArray[i].department_total === null)
+        {
+            salesString = "0";
+            salesNum = 0;
+        }
+        else
+        {
+            salesString += deptArray[i].department_total;
+            salesNum = parseFloat(salesString);
+        }
+        
+        let salesPad = DEPT_SALES_WIDTH - salesString.length;
+        for(let i = 0; i < salesPad; i++)
+        {
+            salesString += " "; 
+        }
+
+        //Calculate the total profit and pad it properly.
+        let profitTotal = salesNum - costNum;
+        let profitString = "";
+        if(profitTotal < 0)
+        {
+            profitString += "-$" + (profitTotal * -1);
+        }
+        else
+        {
+            profitString += " $" + profitTotal;
+        }
+
+        let profitPad = DEPT_PROFIT_WIDTH - profitString.length;
+        for(let i = 0; i < profitPad; i++)
+        {
+            profitString += " "; 
+        }
+        
+        //Print the department data.
+        console.log("| " + idString + "| " + deptString + "| $" + costString + 
+                    "| $" + salesString + "| " + profitString + "|");
+    }
+
+    console.log("");
+}
+
 module.exports =
 {
-    printProducts: printProducts
+    printProducts:    printProducts,
+    printDepartments: printDepartments
 };

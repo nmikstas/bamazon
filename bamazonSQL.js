@@ -15,6 +15,7 @@ let BamazonSQL = function()
     });
 
     this.productResults;
+    this.departmentResults;
     var self = this;
 
     //Print all items that are low on inventory.
@@ -109,7 +110,42 @@ let BamazonSQL = function()
             inputCallback(self.productResults);
         });
     }
+
+    //Print out all the departments.
+    this.getDepartments = function(inputCallback)
+    {
+        let query = "SELECT departments.department_id, products.department_name, departments.department_name, " +
+                    "departments.over_head_costs, SUM(products.product_sales) AS department_total " +
+                    "FROM departments LEFT JOIN products ON (departments.department_name = products.department_name) " +
+                    "GROUP BY products.department_name";
+        
+        self.connection.query(query, function(err, results)
+        {
+            if (err) throw err;
+            self.departmentResults = results;
+            printItems.printDepartments(self.departmentResults);
+            inputCallback();
+        });
+    }
     
+    //Add a new department to the departments table.
+    this.addNewDepartment = function(inputCallback, department, overhead)
+    {
+        self.connection.query("INSERT INTO departments SET ?",
+        [
+            {
+                department_name: department,
+                over_head_costs: overhead
+            }
+        ],
+        function(err, res)
+        {
+            if (err) throw err;
+            console.log("\nThe department '" + department  + "' has been added to the database.\n");
+            inputCallback();
+        });
+    }
+   
     //Close the database connection.
     this.disconnect = function()
     {

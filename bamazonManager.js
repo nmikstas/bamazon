@@ -125,7 +125,7 @@ let addInventory = function(results)
     ]).then(selection =>
     {
         //Convert the user's selection into an index.
-        let index = selection.productSelection - 1;
+        let index = parseInt(selection.productSelection) - 1;
 
         //Get the number of items the customer would like to buy.
         inquirer.prompt
@@ -154,7 +154,7 @@ let addInventory = function(results)
         ]).then(selection =>
         {
             //Get the value to extract from the existing stock.
-            let val = selection.productQuantity;
+            let val = parseInt(selection.productQuantity);
 
             //Update the database.
             bamazonSQL.changeQuantity(getInput, index, val);
